@@ -1,0 +1,9 @@
+export type CallStatus = "incoming" | "active" | "hold";
+
+export type Call = {
+  id: string;
+  phone: string;
+  status: CallStatus;
+  duration: number;
+  updatedAt: number;
+};
