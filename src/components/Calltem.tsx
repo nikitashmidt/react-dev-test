@@ -1,8 +1,15 @@
+import { memo } from "react";
 import { useUIStore } from "../store/uiStore";
 import type { Call } from "../types";
 
-export function CallItem({ call }: { call: Call }) {
+interface IProps {
+  call: Call;
+}
+
+function CallItem({ call }: IProps) {
   const setSelectedCall = useUIStore((s) => s.setSelectedCall);
+
+  console.log("render call item");
 
   return (
     <div
@@ -14,3 +21,5 @@ export function CallItem({ call }: { call: Call }) {
     </div>
   );
 }
+
+export default memo(CallItem);

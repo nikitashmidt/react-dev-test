@@ -1,23 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchCalls, updateCallStatus } from "../api/calls";
+import type { Call, ICallMutate } from "../types";
 
-export function useCalls() {
+export function useUpdateCallStatus() {
   const queryClient = useQueryClient();
 
-  const callsQuery = useQuery({
-    queryKey: ["calls"],
-    queryFn: fetchCalls,
-    refetchOnWindowFocus: true,
-  });
+  return useMutation({
+    mutationFn: ({ id, status }: ICallMutate) => updateCallStatus(id, status),
 
-  const updateStatus = useMutation({
-    mutationFn: updateCallStatus,
+    onMutate: async ({ id, status }: ICallMutate) => {
+      const prev = queryClient.getQueryData<Call[]>(["calls"]);
 
-    onMutate: async ({ id, status }: any) => {
-      const prev = queryClient.getQueryData<any[]>(["calls"]);
-
-      queryClient.setQueryData(["calls"], (calls: any[]) =>
-        calls.map((c) => (c.id === id ? { ...c, status } : c)),
+      queryClient.setQueryData(["calls"], (calls: Call[]) =>
+        calls.map((call) => (call.id === id ? { ...call, status } : call)),
       );
 
       return { prev };
@@ -27,6 +22,11 @@ export function useCalls() {
       queryClient.setQueryData(["calls"], ctx?.prev);
     },
   });
-
-  return { callsQuery, updateStatus };
+}
+export function useCallsQuery() {
+  return useQuery({
+    queryKey: ["calls"],
+    queryFn: fetchCalls,
+    refetchOnWindowFocus: true,
+  });
 }

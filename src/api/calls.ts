@@ -27,7 +27,7 @@ export function updateCallStatus(
         return;
       }
 
-      const call = calls.find((c) => c.id === id)!;
+      const call = calls.find((call) => call.id === id)!;
       call.status = status;
       call.updatedAt = Date.now();
 

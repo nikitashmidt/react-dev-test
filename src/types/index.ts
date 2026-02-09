@@ -7,3 +7,5 @@ export type Call = {
   duration: number;
   updatedAt: number;
 };
+
+export type ICallMutate = Pick<Call, "id" | "status">;
